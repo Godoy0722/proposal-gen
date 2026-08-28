@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Building2, User } from 'lucide-react';
-import { maskCNPJ, maskCEP, maskInscricaoEstadual } from '@/lib/format';
+import { maskCNPJ, maskCEP, maskInscricaoEstadual, maskTelefone } from '@/lib/format';
 
 const ESTADOS = [
   'AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA',
@@ -98,6 +98,27 @@ export function BudgetHeaderForm({ header, client, onHeaderChange, onClientChang
               value={header.inscricaoEstadual}
               onChange={(e) => updateHeader('inscricaoEstadual', maskInscricaoEstadual(e.target.value))}
               placeholder="00.000.000-0.0 00"
+            />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="telefoneContato">Telefone de Contato *</Label>
+            <Input
+              id="telefoneContato"
+              value={header.telefoneContato}
+              onChange={(e) => updateHeader('telefoneContato', maskTelefone(e.target.value))}
+              placeholder="(00) 00000-0000"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="telefoneContatoSecundario">Telefone Secundário</Label>
+            <Input
+              id="telefoneContatoSecundario"
+              value={header.telefoneContatoSecundario}
+              onChange={(e) => updateHeader('telefoneContatoSecundario', maskTelefone(e.target.value))}
+              placeholder="(00) 0000-0000"
             />
           </div>
         </div>

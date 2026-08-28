@@ -73,6 +73,8 @@ export const importBudgetFromJson = async (file: File): Promise<BudgetData> => {
             cidade: '',
             estado: '',
             cep: '',
+            telefoneContato: '',
+            telefoneContatoSecundario: '',
           },
           client: {
             nomeCliente: parsed.client?.nomeCliente || '',

@@ -116,6 +116,12 @@ export function BudgetPartiesCompact({
               {header.cep && ` · CEP ${header.cep}`}
             </p>
           )}
+          {header.telefoneContato && (
+            <p><span className="font-medium text-slate-700 dark:text-slate-300">Tel:</span> {header.telefoneContato}</p>
+          )}
+          {header.telefoneContatoSecundario && (
+            <p><span className="font-medium text-slate-700 dark:text-slate-300">Tel. 2:</span> {header.telefoneContatoSecundario}</p>
+          )}
         </div>
       </div>
     </div>

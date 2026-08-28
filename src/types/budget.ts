@@ -13,6 +13,8 @@ export interface BudgetHeader {
   cidade: string;
   estado: string;
   cep: string;
+  telefoneContato: string;
+  telefoneContatoSecundario: string;
 }
 
 export interface BudgetItem {

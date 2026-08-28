@@ -25,6 +25,8 @@ const emptyHeader: BudgetHeader = {
   cidade: '',
   estado: '',
   cep: '',
+  telefoneContato: '',
+  telefoneContatoSecundario: '',
 };
 
 const emptyClient: BudgetClient = {
@@ -62,7 +64,8 @@ export default function OrcamentoPage() {
       header.enderecoCompleto.trim() &&
       header.cidade.trim() &&
       header.estado &&
-      header.cep.trim()
+      header.cep.trim() &&
+      header.telefoneContato.trim()
     );
   };
 

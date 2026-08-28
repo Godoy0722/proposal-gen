@@ -17,6 +17,8 @@ export async function POST(req: Request) {
       cidade: '',
       estado: '',
       cep: '',
+      telefoneContato: '',
+      telefoneContatoSecundario: '',
     },
     client: json.client || { nomeCliente: '', veiculo: '' },
     items: json.items || [],

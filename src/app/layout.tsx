@@ -19,7 +19,8 @@ export const metadata: Metadata = {
   keywords: ["propostas", "comercial", "contratos", "documentos", "PDF", "impressão"],
   authors: [{ name: "Z.ai Team" }],
   icons: {
-    icon: "https://z-cdn.chatglm.cn/z-ai/static/logo.svg",
+    icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
+    apple: [{ url: "/apple-icon.svg", type: "image/svg+xml" }],
   },
   openGraph: {
     title: "Gerador de Propostas Comerciais",
