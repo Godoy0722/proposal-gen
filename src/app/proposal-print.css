@@ -1,0 +1,47 @@
+@media print {
+  @page {
+    margin: 1cm;
+    size: A4;
+  }
+
+  body {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  /* Hide the form section when printing */
+  .lg\:w-\[40\%\] {
+    display: none !important;
+  }
+
+  /* Make the preview full width when printing */
+  .lg\:w-\[60\%\] {
+    width: 100% !important;
+    border: none !important;
+  }
+
+  /* Hide sticky elements */
+  .sticky {
+    position: static !important;
+  }
+
+  /* Ensure proper text wrapping */
+  * {
+    orphans: 3;
+    widows: 3;
+  }
+
+  /* Avoid page breaks inside key sections */
+  .space-y-8 > * {
+    page-break-inside: avoid;
+  }
+
+  /* Better signature area printing */
+  .border-b-2 {
+    border-bottom-width: 2px !important;
+  }
+}

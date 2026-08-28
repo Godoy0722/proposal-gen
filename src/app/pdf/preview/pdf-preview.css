@@ -1,0 +1,107 @@
+@page {
+  size: A4;
+  margin: 20mm; /* Standard A4 margins for all pages */
+}
+
+html,
+body {
+  background: #ffffff;
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  color-scheme: light;
+}
+
+* {
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+/* Ensure headings stick to their content */
+h1, h2, h3, h4, h5, h6 {
+  break-after: avoid;
+  page-break-after: avoid;
+}
+
+/* Prevent tables from breaking inside rows/cells */
+table, tr, td, th {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+/* Allow product rows to break across pages; keep totals block together */
+.budget-products-table tbody tr {
+  break-inside: auto;
+  page-break-inside: auto;
+}
+
+.budget-totals {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+/* Compact budget layout for PDF */
+.budget-document {
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.budget-document .budget-parties {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.budget-products-table thead {
+  display: table-header-group;
+}
+
+/* Signature area should try to stay together */
+.signature-area {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+/* General block protection */
+.keep-together {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.pdf-page {
+  width: 100%;
+  min-height: 100%;
+  margin: 0 auto;
+  background: white;
+  box-sizing: border-box;
+  overflow: visible;
+}
+
+/* 
+  Override Template paddings/margins to fit perfectly in .pdf-page 
+  The templates usually have p-8 or p-12. We want to strip that 
+  because .pdf-page handles the print margins.
+*/
+#pdf-root > div {
+  padding: 0 !important;
+  margin: 0 !important;
+  min-height: auto !important;
+  width: 100% !important;
+  max-width: none !important;
+}
+
+/* Ensure inner containers don't have excessive spacing that breaks layout */
+#pdf-root .min-h-screen {
+  min-height: auto !important;
+}
+
+/* Fix grid layouts for print if needed */
+.grid {
+  display: grid;
+}
+
+/* Hide shadcn toast or other portals if they somehow leak (unlikely in this isolated page) */
+[data-radix-portal] {
+  display: none !important;
+}
