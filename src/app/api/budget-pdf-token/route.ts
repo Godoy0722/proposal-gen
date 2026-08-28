@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createBudgetPdfToken } from '@/lib/budgetTokenStore';
+import { normalizeBudgetHeader, normalizeBudgetClient } from '@/lib/budgetJsonIo';
 import type { BudgetData } from '@/types/budget';
 
 export const runtime = 'nodejs';
@@ -9,18 +10,8 @@ export async function POST(req: Request) {
   const json = (await req.json()) as Partial<BudgetData>;
 
   const budgetData: BudgetData = {
-    header: json.header || {
-      nomeEmpresa: '',
-      cnpj: '',
-      inscricaoEstadual: '',
-      enderecoCompleto: '',
-      cidade: '',
-      estado: '',
-      cep: '',
-      telefoneContato: '',
-      telefoneContatoSecundario: '',
-    },
-    client: json.client || { nomeCliente: '', veiculo: '' },
+    header: normalizeBudgetHeader(json.header),
+    client: normalizeBudgetClient(json.client),
     items: json.items || [],
     desconto: json.desconto || 0,
     selectedTemplate: json.selectedTemplate || 1,

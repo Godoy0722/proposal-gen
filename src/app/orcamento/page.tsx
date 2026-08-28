@@ -65,7 +65,7 @@ export default function OrcamentoPage() {
       header.cidade.trim() &&
       header.estado &&
       header.cep.trim() &&
-      header.telefoneContato.trim()
+      (header.telefoneContato ?? '').trim()
     );
   };
 
