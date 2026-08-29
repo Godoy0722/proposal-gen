@@ -16,24 +16,64 @@ function partyBoxClass(variant: Variant) {
   return 'p-2.5 bg-slate-50 dark:bg-slate-800/50 rounded border border-slate-200 dark:border-slate-700';
 }
 
-export function BudgetLogoBanner({ logo, variant = 'modern' }: { logo?: Logo; variant?: Variant }) {
-  if (!logo?.preview) return null;
-
-  const imgClass = 'h-24 md:h-28 w-auto max-w-full object-contain';
-
-  if (variant === 'tech') {
-    return (
-      <div className="flex justify-center budget-logo-header keep-together pb-1">
-        <div className="bg-white dark:bg-slate-700 p-3 rounded-lg shadow-sm">
-          <img src={logo.preview} alt="Logo" className={imgClass} />
-        </div>
-      </div>
-    );
-  }
+function BudgetCompanyDetails({ header }: { header: BudgetHeader }) {
+  const textClass = 'text-xs text-slate-600 dark:text-slate-400 leading-snug';
 
   return (
-    <div className="flex justify-center budget-logo-header keep-together pb-1">
-      <img src={logo.preview} alt="Logo" className={imgClass} />
+    <div className={`${textClass} mt-1 space-y-0.5`}>
+      {header.cnpj && <p><span className="font-medium text-slate-700 dark:text-slate-300">CNPJ:</span> {header.cnpj}</p>}
+      {header.inscricaoEstadual && (
+        <p><span className="font-medium text-slate-700 dark:text-slate-300">IE:</span> {header.inscricaoEstadual}</p>
+      )}
+      {header.enderecoCompleto && <p>{header.enderecoCompleto}</p>}
+      {(header.cidade || header.estado || header.cep) && (
+        <p>
+          {[header.cidade, header.estado].filter(Boolean).join(' - ')}
+          {header.cep && ` · CEP ${header.cep}`}
+        </p>
+      )}
+      {header.telefoneContato && (
+        <p><span className="font-medium text-slate-700 dark:text-slate-300">Tel:</span> {header.telefoneContato}</p>
+      )}
+      {header.telefoneContatoSecundario && (
+        <p><span className="font-medium text-slate-700 dark:text-slate-300">Tel. 2:</span> {header.telefoneContatoSecundario}</p>
+      )}
+    </div>
+  );
+}
+
+export function BudgetFooter({
+  header,
+  logo,
+  variant = 'modern',
+}: {
+  header: BudgetHeader;
+  logo?: Logo;
+  variant?: Variant;
+}) {
+  const box = partyBoxClass(variant);
+  const imgClass = 'h-48 md:h-56 w-auto max-w-full object-contain mx-auto';
+
+  return (
+    <div className={`budget-footer keep-together border-t border-slate-200 dark:border-slate-700 pt-4 mt-4 ${box}`}>
+      <p className="text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-400 text-center mb-3">
+        Este orçamento foi feito por:
+      </p>
+      <div className="text-center space-y-2">
+        {logo?.preview && (
+          <div className="flex justify-center pb-2">
+            {variant === 'tech' ? (
+              <div className="bg-white dark:bg-slate-700 p-4 rounded-lg shadow-sm">
+                <img src={logo.preview} alt="Logo" className={imgClass} />
+              </div>
+            ) : (
+              <img src={logo.preview} alt="Logo" className={imgClass} />
+            )}
+          </div>
+        )}
+        <p className="text-sm font-semibold text-slate-900 dark:text-white">{header.nomeEmpresa || '—'}</p>
+        <BudgetCompanyDetails header={header} />
+      </div>
     </div>
   );
 }
@@ -101,25 +141,7 @@ export function BudgetPartiesCompact({
       <div className={box}>
         <p className={labelClass}>Empresa</p>
         <p className="text-sm font-semibold text-slate-900 dark:text-white leading-tight">{header.nomeEmpresa || '—'}</p>
-        <div className={`${textClass} mt-1 space-y-0.5`}>
-          {header.cnpj && <p><span className="font-medium text-slate-700 dark:text-slate-300">CNPJ:</span> {header.cnpj}</p>}
-          {header.inscricaoEstadual && (
-            <p><span className="font-medium text-slate-700 dark:text-slate-300">IE:</span> {header.inscricaoEstadual}</p>
-          )}
-          {header.enderecoCompleto && <p>{header.enderecoCompleto}</p>}
-          {(header.cidade || header.estado || header.cep) && (
-            <p>
-              {[header.cidade, header.estado].filter(Boolean).join(' - ')}
-              {header.cep && ` · CEP ${header.cep}`}
-            </p>
-          )}
-          {header.telefoneContato && (
-            <p><span className="font-medium text-slate-700 dark:text-slate-300">Tel:</span> {header.telefoneContato}</p>
-          )}
-          {header.telefoneContatoSecundario && (
-            <p><span className="font-medium text-slate-700 dark:text-slate-300">Tel. 2:</span> {header.telefoneContatoSecundario}</p>
-          )}
-        </div>
+        <BudgetCompanyDetails header={header} />
       </div>
     </div>
   );
