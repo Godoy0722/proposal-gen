@@ -53,6 +53,11 @@ table, tr, td, th {
   page-break-inside: avoid;
 }
 
+.budget-logo-header {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
 .budget-products-table thead {
   display: table-header-group;
 }

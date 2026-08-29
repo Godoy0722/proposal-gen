@@ -16,60 +16,57 @@ function partyBoxClass(variant: Variant) {
   return 'p-2.5 bg-slate-50 dark:bg-slate-800/50 rounded border border-slate-200 dark:border-slate-700';
 }
 
-export function BudgetTitleModern({ finalizedDate, logo }: { finalizedDate?: string; logo?: Logo }) {
-  return (
-    <div className="flex items-center justify-between gap-4">
-      {logo?.preview ? (
-        <img src={logo.preview} alt="Logo" className="h-12 object-contain shrink-0" />
-      ) : (
-        <div className="shrink-0" />
-      )}
-      <div className="flex items-baseline justify-end gap-4 flex-1">
-        <h1 className="text-xl font-bold text-slate-900 dark:text-white">Orçamento</h1>
-        {finalizedDate && (
-          <p className="text-xs text-slate-600 dark:text-slate-400 shrink-0">{finalizedDate}</p>
-        )}
-      </div>
-    </div>
-  );
-}
+export function BudgetLogoBanner({ logo, variant = 'modern' }: { logo?: Logo; variant?: Variant }) {
+  if (!logo?.preview) return null;
 
-export function BudgetTitleFormal({ finalizedDate, logo }: { finalizedDate?: string; logo?: Logo }) {
-  return (
-    <div className="flex items-center justify-between gap-4">
-      {logo?.preview ? (
-        <img src={logo.preview} alt="Logo" className="h-12 object-contain shrink-0" />
-      ) : (
-        <div className="w-12 shrink-0" />
-      )}
-      <div className="flex-1 text-center">
-        <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100">Orçamento</h1>
-        {finalizedDate && (
-          <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5 uppercase tracking-wide">{finalizedDate}</p>
-        )}
-      </div>
-      <div className="w-12 shrink-0" />
-    </div>
-  );
-}
+  const imgClass = 'h-24 md:h-28 w-auto max-w-full object-contain';
 
-export function BudgetTitleTech({ finalizedDate, logo }: { finalizedDate?: string; logo?: Logo }) {
-  return (
-    <div className="flex items-center justify-between gap-4">
-      {logo?.preview ? (
-        <div className="bg-white dark:bg-slate-700 p-1.5 rounded shrink-0">
-          <img src={logo.preview} alt="Logo" className="h-10 object-contain" />
+  if (variant === 'tech') {
+    return (
+      <div className="flex justify-center budget-logo-header keep-together pb-1">
+        <div className="bg-white dark:bg-slate-700 p-3 rounded-lg shadow-sm">
+          <img src={logo.preview} alt="Logo" className={imgClass} />
         </div>
-      ) : (
-        <div className="shrink-0" />
-      )}
-      <div className="flex-1 text-center">
-        <h1 className="text-xl font-bold tracking-tight text-white">Orçamento</h1>
-        {finalizedDate && (
-          <p className="text-xs text-slate-400 mt-0.5 uppercase tracking-wide">{finalizedDate}</p>
-        )}
       </div>
-      <div className="shrink-0" />
+    );
+  }
+
+  return (
+    <div className="flex justify-center budget-logo-header keep-together pb-1">
+      <img src={logo.preview} alt="Logo" className={imgClass} />
+    </div>
+  );
+}
+
+export function BudgetTitleModern({ finalizedDate }: { finalizedDate?: string }) {
+  return (
+    <div className="text-center">
+      <h1 className="text-xl font-bold text-slate-900 dark:text-white">Orçamento</h1>
+      {finalizedDate && (
+        <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">{finalizedDate}</p>
+      )}
+    </div>
+  );
+}
+
+export function BudgetTitleFormal({ finalizedDate }: { finalizedDate?: string }) {
+  return (
+    <div className="text-center">
+      <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100">Orçamento</h1>
+      {finalizedDate && (
+        <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5 uppercase tracking-wide">{finalizedDate}</p>
+      )}
+    </div>
+  );
+}
+
+export function BudgetTitleTech({ finalizedDate }: { finalizedDate?: string }) {
+  return (
+    <div className="text-center">
+      <h1 className="text-xl font-bold tracking-tight text-white">Orçamento</h1>
+      {finalizedDate && (
+        <p className="text-xs text-slate-400 mt-0.5 uppercase tracking-wide">{finalizedDate}</p>
+      )}
     </div>
   );
 }
