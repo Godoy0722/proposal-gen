@@ -51,6 +51,10 @@ export function BudgetFooter({
   logo?: Logo;
   variant?: Variant;
 }) {
+  // Rodapé temporariamente desabilitado
+  return null;
+
+  /*
   const box = partyBoxClass(variant);
   const imgClass = 'h-48 md:h-56 w-auto max-w-full object-contain mx-auto';
 
@@ -76,6 +80,7 @@ export function BudgetFooter({
       </div>
     </div>
   );
+  */
 }
 
 export function BudgetTitleModern({ finalizedDate }: { finalizedDate?: string }) {
