@@ -168,9 +168,10 @@ export function BudgetProductsTable({ items, desconto }: TableProps) {
           <thead className="bg-slate-100 dark:bg-slate-800">
             <tr>
               <th className={`${thClass} text-left`}>Descrição</th>
-              <th className={`${thClass} text-right w-24`}>Unit.</th>
-              <th className={`${thClass} text-center w-12`}>Qtd</th>
-              <th className={`${thClass} text-right w-24`}>Total</th>
+              <th className={`${thClass} text-left w-20`}>Marca</th>
+              <th className={`${thClass} text-right w-20`}>Unit.</th>
+              <th className={`${thClass} text-center w-10`}>Qtd</th>
+              <th className={`${thClass} text-right w-20`}>Total</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
@@ -178,6 +179,7 @@ export function BudgetProductsTable({ items, desconto }: TableProps) {
               items.map((item) => (
                 <tr key={item.id}>
                   <td className={`${tdClass} font-medium`}>{item.descricao}</td>
+                  <td className={`${tdClass} text-slate-600 dark:text-slate-400`}>{item.marca || '—'}</td>
                   <td className={`${tdClass} text-right text-slate-600 dark:text-slate-400`}>R$ {formatBRL(item.valorUnitario)}</td>
                   <td className={`${tdClass} text-center font-semibold`}>{item.quantidade}</td>
                   <td className={`${tdClass} text-right font-semibold`}>R$ {formatBRL(getItemTotal(item))}</td>
@@ -185,7 +187,7 @@ export function BudgetProductsTable({ items, desconto }: TableProps) {
               ))
             ) : (
               <tr>
-                <td colSpan={4} className="px-2 py-4 text-center text-xs text-slate-400 italic">Nenhum produto adicionado</td>
+                <td colSpan={5} className="px-2 py-4 text-center text-xs text-slate-400 italic">Nenhum produto adicionado</td>
               </tr>
             )}
           </tbody>

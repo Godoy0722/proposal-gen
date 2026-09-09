@@ -20,6 +20,7 @@ export interface BudgetHeader {
 export interface BudgetItem {
   id: string;
   descricao: string;
+  marca: string;
   valorUnitario: number;
   quantidade: number;
 }

@@ -20,6 +20,7 @@ interface BudgetItemsFormProps {
 export function BudgetItemsForm({ items, desconto, onItemsChange, onDescontoChange }: BudgetItemsFormProps) {
   const [newItem, setNewItem] = useState({
     descricao: '',
+    marca: '',
     valorUnitario: '',
     quantidade: '1',
   });
@@ -39,12 +40,13 @@ export function BudgetItemsForm({ items, desconto, onItemsChange, onDescontoChan
       {
         id: Date.now().toString(),
         descricao: newItem.descricao.trim(),
+        marca: newItem.marca.trim(),
         valorUnitario,
         quantidade,
       },
     ]);
 
-    setNewItem({ descricao: '', valorUnitario: '', quantidade: '1' });
+    setNewItem({ descricao: '', marca: '', valorUnitario: '', quantidade: '1' });
   };
 
   const removeItem = (id: string) => {
@@ -82,6 +84,16 @@ export function BudgetItemsForm({ items, desconto, onItemsChange, onDescontoChan
               value={newItem.descricao}
               onChange={(e) => setNewItem({ ...newItem, descricao: e.target.value })}
               placeholder="Descrição do produto ou serviço"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="marca">Marca</Label>
+            <Input
+              id="marca"
+              value={newItem.marca}
+              onChange={(e) => setNewItem({ ...newItem, marca: e.target.value })}
+              placeholder="Marca do produto"
             />
           </div>
 
@@ -124,6 +136,9 @@ export function BudgetItemsForm({ items, desconto, onItemsChange, onDescontoChan
                 >
                   <div className="flex-1">
                     <p className="font-medium text-sm">{item.descricao}</p>
+                    {item.marca && (
+                      <p className="text-xs text-muted-foreground">Marca: {item.marca}</p>
+                    )}
                     <p className="text-xs text-muted-foreground mt-1">
                       {item.quantidade} × R$ {formatBRL(item.valorUnitario)} = R$ {formatBRL(getItemTotal(item))}
                     </p>

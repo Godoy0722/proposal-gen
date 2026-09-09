@@ -1,4 +1,4 @@
-import type { BudgetData, BudgetHeader, BudgetClient } from '@/types/budget';
+import type { BudgetData, BudgetHeader, BudgetClient, BudgetItem } from '@/types/budget';
 
 interface SerializableLogo {
   preview: string;
@@ -31,6 +31,16 @@ export function normalizeBudgetClient(client?: Partial<BudgetClient>): BudgetCli
     nomeCliente: client?.nomeCliente ?? '',
     veiculo: client?.veiculo ?? '',
   };
+}
+
+export function normalizeBudgetItems(items?: Partial<BudgetItem>[]): BudgetItem[] {
+  return (items ?? []).map((item, index) => ({
+    id: item.id ?? String(index),
+    descricao: item.descricao ?? '',
+    marca: item.marca ?? '',
+    valorUnitario: item.valorUnitario ?? 0,
+    quantidade: item.quantidade ?? 0,
+  }));
 }
 
 export const exportBudgetToJson = (data: BudgetData) => {
@@ -88,7 +98,7 @@ export const importBudgetFromJson = async (file: File): Promise<BudgetData> => {
         const budgetData: BudgetData = {
           header: normalizeBudgetHeader(parsed.header),
           client: normalizeBudgetClient(parsed.client),
-          items: parsed.items || [],
+          items: normalizeBudgetItems(parsed.items),
           desconto: parsed.desconto || 0,
           selectedTemplate: parsed.selectedTemplate || 1,
           logo: {
