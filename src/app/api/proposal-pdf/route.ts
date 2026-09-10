@@ -1,7 +1,9 @@
 import { consumePdfToken, getPdfToken } from '@/lib/pdfTokenStore';
+import { launchBrowser } from '@/lib/launchBrowser';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
+export const maxDuration = 60;
 
 function ddmmyyyyToIso(date: string | undefined) {
   if (!date) return undefined;
@@ -34,11 +36,7 @@ export async function GET(req: Request) {
   const finalizedIso = ddmmyyyyToIso(proposalData.finalizedDate) || new Date().toISOString().slice(0, 10);
   const filename = `proposta_template${proposalData.selectedTemplate}_${normalizeFilenamePart(finalizedIso)}.pdf`;
 
-  const puppeteer = await import('puppeteer');
-  const browser = await puppeteer.default.launch({
-    headless: true,
-    args: ['--no-sandbox', '--disable-setuid-sandbox'],
-  });
+  const browser = await launchBrowser();
 
   try {
     const page = await browser.newPage();
