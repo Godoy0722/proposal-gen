@@ -22,22 +22,11 @@ function getDefaultFilename(budgetData: BudgetData) {
 }
 
 export async function downloadBudgetPdf(budgetData: BudgetData) {
-  const tokenRes = await fetch('/api/budget-pdf-token', {
+  const pdfRes = await fetch('/api/budget-pdf', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(budgetData),
   });
-
-  if (!tokenRes.ok) {
-    throw new Error('Não foi possível preparar o PDF.');
-  }
-
-  const tokenJson = (await tokenRes.json()) as { token?: string };
-  if (!tokenJson.token) {
-    throw new Error('Não foi possível preparar o PDF.');
-  }
-
-  const pdfRes = await fetch(`/api/budget-pdf?token=${encodeURIComponent(tokenJson.token)}`);
   if (!pdfRes.ok) {
     let message = 'Não foi possível gerar o PDF.';
     try {

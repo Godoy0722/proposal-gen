@@ -1,5 +1,3 @@
-'use client';
-
 import { BudgetTemplateProps } from '@/types/budget';
 import { BudgetTitleModern, BudgetPartiesCompact, BudgetProductsTable, BudgetFooter } from './budgetShared';
 
