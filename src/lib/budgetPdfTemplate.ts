@@ -18,7 +18,8 @@ function normalizeFilenamePart(input: string) {
 
 function getDefaultFilename(budgetData: BudgetData) {
   const finalizedIso = ddmmyyyyToIso(budgetData.finalizedDate) || new Date().toISOString().slice(0, 10);
-  return `orcamento_template${budgetData.selectedTemplate}_${normalizeFilenamePart(finalizedIso)}.pdf`;
+  const serialPart = budgetData.serialNumber ? `${budgetData.serialNumber}_` : '';
+  return `orcamento_${serialPart}template${budgetData.selectedTemplate}_${normalizeFilenamePart(finalizedIso)}.pdf`;
 }
 
 export async function downloadBudgetPdf(budgetData: BudgetData) {

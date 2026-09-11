@@ -38,6 +38,7 @@ async function renderBudgetPdfHtml(budgetData: BudgetData) {
       selectedTemplate: budgetData.selectedTemplate,
       finalized: budgetData.finalized,
       finalizedDate: budgetData.finalizedDate,
+      serialNumber: budgetData.serialNumber,
     }),
   );
 
@@ -66,6 +67,7 @@ function parseBudgetData(json: Partial<BudgetData>): BudgetData {
     logo: { file: null, preview: json.logo?.preview || '' },
     finalized: Boolean(json.finalized),
     finalizedDate: json.finalizedDate,
+    serialNumber: json.serialNumber,
   };
 }
 
@@ -78,7 +80,8 @@ export async function POST(req: Request) {
   }
 
   const finalizedIso = ddmmyyyyToIso(budgetData.finalizedDate) || new Date().toISOString().slice(0, 10);
-  const filename = `orcamento_template${budgetData.selectedTemplate}_${normalizeFilenamePart(finalizedIso)}.pdf`;
+  const serialPart = budgetData.serialNumber ? `${budgetData.serialNumber}_` : '';
+  const filename = `orcamento_${serialPart}template${budgetData.selectedTemplate}_${normalizeFilenamePart(finalizedIso)}.pdf`;
 
   const browser = await launchBrowser();
 

@@ -107,6 +107,7 @@ export const importBudgetFromJson = async (file: File): Promise<BudgetData> => {
           },
           finalized: parsed.finalized || false,
           finalizedDate: parsed.finalizedDate,
+          serialNumber: parsed.serialNumber,
         };
 
         resolve(budgetData);

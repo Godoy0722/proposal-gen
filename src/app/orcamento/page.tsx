@@ -15,6 +15,8 @@ import { Logo } from '@/types/proposal';
 import { useToast } from '@/hooks/use-toast';
 import { downloadBudgetPdf } from '@/lib/budgetPdfTemplate';
 import { exportBudgetToJson, importBudgetFromJson } from '@/lib/budgetJsonIo';
+import { confirmBudgetSerial, reserveNextBudgetSerial } from '@/lib/budgetSerial';
+import { formatBudgetTitle } from '@/components/budget/templates/budgetShared';
 import { LogoUpload } from '@/components/proposal/LogoUpload';
 
 const emptyHeader: BudgetHeader = {
@@ -52,7 +54,11 @@ export default function OrcamentoPage() {
   useEffect(() => {
     const now = new Date();
     const formattedDate = `${String(now.getDate()).padStart(2, '0')}/${String(now.getMonth() + 1).padStart(2, '0')}/${now.getFullYear()}`;
-    setBudgetData((prev) => ({ ...prev, finalizedDate: formattedDate }));
+    setBudgetData((prev) => ({
+      ...prev,
+      finalizedDate: formattedDate,
+      serialNumber: prev.serialNumber ?? reserveNextBudgetSerial(),
+    }));
   }, []);
 
   const isFormValid = () => {
@@ -90,7 +96,10 @@ export default function OrcamentoPage() {
 
     try {
       const data = await importBudgetFromJson(file);
-      setBudgetData(data);
+      setBudgetData({
+        ...data,
+        serialNumber: data.serialNumber ?? reserveNextBudgetSerial(),
+      });
       setFormKey((prev) => prev + 1);
       toast({ title: 'Importação concluída', description: 'Orçamento carregado com sucesso.' });
     } catch (error) {
@@ -125,10 +134,14 @@ export default function OrcamentoPage() {
 
     const now = new Date();
     const formattedDate = `${String(now.getDate()).padStart(2, '0')}/${String(now.getMonth() + 1).padStart(2, '0')}/${now.getFullYear()}`;
-    const nextData: BudgetData = { ...budgetData, finalized: true, finalizedDate: formattedDate };
+    const serialNumber = confirmBudgetSerial(budgetData.serialNumber ?? reserveNextBudgetSerial());
+    const nextData: BudgetData = { ...budgetData, finalized: true, finalizedDate: formattedDate, serialNumber };
     setBudgetData(nextData);
 
-    toast({ title: 'Orçamento finalizado!', description: `Data: ${formattedDate}` });
+    toast({
+      title: `${formatBudgetTitle(serialNumber)} finalizado!`,
+      description: `Data: ${formattedDate}`,
+    });
     await handleDownloadPdf(nextData);
   };
 
@@ -246,7 +259,7 @@ export default function OrcamentoPage() {
               <Card className="border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-950">
                 <CardHeader>
                   <CardTitle className="text-green-900 dark:text-green-100">
-                    Orçamento Finalizado
+                    {formatBudgetTitle(budgetData.serialNumber)} Finalizado
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -277,6 +290,7 @@ export default function OrcamentoPage() {
             selectedTemplate={budgetData.selectedTemplate}
             finalized={budgetData.finalized}
             finalizedDate={budgetData.finalizedDate}
+            serialNumber={budgetData.serialNumber}
           />
         </div>
       </div>

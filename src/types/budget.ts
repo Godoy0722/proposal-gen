@@ -34,6 +34,7 @@ export interface BudgetData {
   logo: Logo;
   finalized: boolean;
   finalizedDate?: string;
+  serialNumber?: number;
 }
 
 export interface BudgetTemplateProps {
@@ -44,4 +45,5 @@ export interface BudgetTemplateProps {
   logo: Logo;
   finalized?: boolean;
   finalizedDate?: string;
+  serialNumber?: number;
 }

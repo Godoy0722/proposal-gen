@@ -83,10 +83,14 @@ export function BudgetFooter({
   */
 }
 
-export function BudgetTitleModern({ finalizedDate }: { finalizedDate?: string }) {
+export function formatBudgetTitle(serialNumber?: number) {
+  return serialNumber != null && serialNumber > 0 ? `Orçamento ${serialNumber}` : 'Orçamento';
+}
+
+export function BudgetTitleModern({ finalizedDate, serialNumber }: { finalizedDate?: string; serialNumber?: number }) {
   return (
     <div className="text-center">
-      <h1 className="text-xl font-bold text-slate-900 dark:text-white">Orçamento</h1>
+      <h1 className="text-xl font-bold text-slate-900 dark:text-white">{formatBudgetTitle(serialNumber)}</h1>
       {finalizedDate && (
         <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">{finalizedDate}</p>
       )}
@@ -94,10 +98,10 @@ export function BudgetTitleModern({ finalizedDate }: { finalizedDate?: string })
   );
 }
 
-export function BudgetTitleFormal({ finalizedDate }: { finalizedDate?: string }) {
+export function BudgetTitleFormal({ finalizedDate, serialNumber }: { finalizedDate?: string; serialNumber?: number }) {
   return (
     <div className="text-center">
-      <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100">Orçamento</h1>
+      <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100">{formatBudgetTitle(serialNumber)}</h1>
       {finalizedDate && (
         <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5 uppercase tracking-wide">{finalizedDate}</p>
       )}
@@ -105,10 +109,10 @@ export function BudgetTitleFormal({ finalizedDate }: { finalizedDate?: string })
   );
 }
 
-export function BudgetTitleTech({ finalizedDate }: { finalizedDate?: string }) {
+export function BudgetTitleTech({ finalizedDate, serialNumber }: { finalizedDate?: string; serialNumber?: number }) {
   return (
     <div className="text-center">
-      <h1 className="text-xl font-bold tracking-tight text-white">Orçamento</h1>
+      <h1 className="text-xl font-bold tracking-tight text-white">{formatBudgetTitle(serialNumber)}</h1>
       {finalizedDate && (
         <p className="text-xs text-slate-400 mt-0.5 uppercase tracking-wide">{finalizedDate}</p>
       )}
