@@ -23,6 +23,8 @@ export interface BudgetItem {
   marca: string;
   valorUnitario: number;
   quantidade: number;
+  /** Desconto absoluto (R$) aplicado a este item. */
+  descontoItem: number;
 }
 
 export interface BudgetData {

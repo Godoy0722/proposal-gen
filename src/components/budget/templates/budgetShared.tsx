@@ -1,7 +1,13 @@
 import type { BudgetHeader, BudgetClient, BudgetItem } from '@/types/budget';
 import type { Logo } from '@/types/proposal';
 import { formatBRL } from '@/lib/format';
-import { getDiscountAmount, getFinalTotal, getItemTotal, getSubtotal } from '@/lib/budgetCalculations';
+import {
+  getDiscountAmount,
+  getFinalTotal,
+  getItemDiscount,
+  getItemTotal,
+  getSubtotal,
+} from '@/lib/budgetCalculations';
 
 interface TableProps {
   items: BudgetItem[];
@@ -175,23 +181,30 @@ export function BudgetProductsTable({ items, desconto }: TableProps) {
               <th className={`${thClass} text-left w-20`}>Marca</th>
               <th className={`${thClass} text-right w-20`}>Unit.</th>
               <th className={`${thClass} text-center w-10`}>Qtd</th>
+              <th className={`${thClass} text-right w-16`}>Desc.</th>
               <th className={`${thClass} text-right w-20`}>Total</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
             {items.length > 0 ? (
-              items.map((item) => (
-                <tr key={item.id}>
-                  <td className={`${tdClass} font-medium`}>{item.descricao}</td>
-                  <td className={`${tdClass} text-slate-600 dark:text-slate-400`}>{item.marca || '—'}</td>
-                  <td className={`${tdClass} text-right text-slate-600 dark:text-slate-400`}>R$ {formatBRL(item.valorUnitario)}</td>
-                  <td className={`${tdClass} text-center font-semibold`}>{item.quantidade}</td>
-                  <td className={`${tdClass} text-right font-semibold`}>R$ {formatBRL(getItemTotal(item))}</td>
-                </tr>
-              ))
+              items.map((item) => {
+                const itemDiscount = getItemDiscount(item);
+                return (
+                  <tr key={item.id}>
+                    <td className={`${tdClass} font-medium`}>{item.descricao}</td>
+                    <td className={`${tdClass} text-slate-600 dark:text-slate-400`}>{item.marca || '—'}</td>
+                    <td className={`${tdClass} text-right text-slate-600 dark:text-slate-400`}>R$ {formatBRL(item.valorUnitario)}</td>
+                    <td className={`${tdClass} text-center font-semibold`}>{item.quantidade}</td>
+                    <td className={`${tdClass} text-right text-slate-600 dark:text-slate-400`}>
+                      {itemDiscount > 0 ? `- R$ ${formatBRL(itemDiscount)}` : '—'}
+                    </td>
+                    <td className={`${tdClass} text-right font-semibold`}>R$ {formatBRL(getItemTotal(item))}</td>
+                  </tr>
+                );
+              })
             ) : (
               <tr>
-                <td colSpan={5} className="px-2 py-4 text-center text-xs text-slate-400 italic">Nenhum produto adicionado</td>
+                <td colSpan={6} className="px-2 py-4 text-center text-xs text-slate-400 italic">Nenhum produto adicionado</td>
               </tr>
             )}
           </tbody>

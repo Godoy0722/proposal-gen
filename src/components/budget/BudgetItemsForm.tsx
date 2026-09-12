@@ -8,7 +8,15 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Plus, Trash2, Package } from 'lucide-react';
 import { formatBRL, parseCurrencyInput } from '@/lib/format';
-import { getDiscountAmount, getFinalTotal, getItemTotal, getSubtotal } from '@/lib/budgetCalculations';
+import {
+  capItemDiscount,
+  getDiscountAmount,
+  getFinalTotal,
+  getItemDiscount,
+  getItemGrossTotal,
+  getItemTotal,
+  getSubtotal,
+} from '@/lib/budgetCalculations';
 
 interface BudgetItemsFormProps {
   items: BudgetItem[];
@@ -23,6 +31,7 @@ export function BudgetItemsForm({ items, desconto, onItemsChange, onDescontoChan
     marca: '',
     valorUnitario: '',
     quantidade: '1',
+    descontoItem: '',
   });
 
   const subtotal = getSubtotal(items);
@@ -35,6 +44,12 @@ export function BudgetItemsForm({ items, desconto, onItemsChange, onDescontoChan
 
     if (!newItem.descricao.trim() || valorUnitario <= 0 || quantidade <= 0) return;
 
+    const descontoItem = capItemDiscount(
+      valorUnitario,
+      quantidade,
+      parseCurrencyInput(newItem.descontoItem),
+    );
+
     onItemsChange([
       ...items,
       {
@@ -43,10 +58,11 @@ export function BudgetItemsForm({ items, desconto, onItemsChange, onDescontoChan
         marca: newItem.marca.trim(),
         valorUnitario,
         quantidade,
+        descontoItem,
       },
     ]);
 
-    setNewItem({ descricao: '', marca: '', valorUnitario: '', quantidade: '1' });
+    setNewItem({ descricao: '', marca: '', valorUnitario: '', quantidade: '1', descontoItem: '' });
   };
 
   const removeItem = (id: string) => {
@@ -97,7 +113,7 @@ export function BudgetItemsForm({ items, desconto, onItemsChange, onDescontoChan
             />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="space-y-2">
               <Label htmlFor="valorUnitario">Valor Unitário (R$) *</Label>
               <Input
@@ -115,6 +131,15 @@ export function BudgetItemsForm({ items, desconto, onItemsChange, onDescontoChan
                 min="1"
                 value={newItem.quantidade}
                 onChange={(e) => setNewItem({ ...newItem, quantidade: e.target.value })}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="descontoItem">Desconto (R$)</Label>
+              <Input
+                id="descontoItem"
+                value={newItem.descontoItem}
+                onChange={(e) => setNewItem({ ...newItem, descontoItem: e.target.value })}
+                placeholder="0,00"
               />
             </div>
           </div>
@@ -140,7 +165,10 @@ export function BudgetItemsForm({ items, desconto, onItemsChange, onDescontoChan
                       <p className="text-xs text-muted-foreground">Marca: {item.marca}</p>
                     )}
                     <p className="text-xs text-muted-foreground mt-1">
-                      {item.quantidade} × R$ {formatBRL(item.valorUnitario)} = R$ {formatBRL(getItemTotal(item))}
+                      {item.quantidade} × R$ {formatBRL(item.valorUnitario)} = R$ {formatBRL(getItemGrossTotal(item))}
+                      {getItemDiscount(item) > 0 && (
+                        <> · desconto R$ {formatBRL(getItemDiscount(item))} · líquido R$ {formatBRL(getItemTotal(item))}</>
+                      )}
                     </p>
                   </div>
                   <Button

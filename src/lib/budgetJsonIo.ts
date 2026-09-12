@@ -1,4 +1,5 @@
 import type { BudgetData, BudgetHeader, BudgetClient, BudgetItem } from '@/types/budget';
+import { capItemDiscount } from '@/lib/budgetCalculations';
 
 interface SerializableLogo {
   preview: string;
@@ -34,13 +35,23 @@ export function normalizeBudgetClient(client?: Partial<BudgetClient>): BudgetCli
 }
 
 export function normalizeBudgetItems(items?: Partial<BudgetItem>[]): BudgetItem[] {
-  return (items ?? []).map((item, index) => ({
-    id: item.id ?? String(index),
-    descricao: item.descricao ?? '',
-    marca: item.marca ?? '',
-    valorUnitario: item.valorUnitario ?? 0,
-    quantidade: item.quantidade ?? 0,
-  }));
+  return (items ?? []).map((item, index) => {
+    const valorUnitario = item.valorUnitario ?? 0;
+    const quantidade = item.quantidade ?? 0;
+    const descontoItem = capItemDiscount(
+      valorUnitario,
+      quantidade,
+      item.descontoItem ?? 0,
+    );
+    return {
+      id: item.id ?? String(index),
+      descricao: item.descricao ?? '',
+      marca: item.marca ?? '',
+      valorUnitario,
+      quantidade,
+      descontoItem,
+    };
+  });
 }
 
 export const exportBudgetToJson = (data: BudgetData) => {
